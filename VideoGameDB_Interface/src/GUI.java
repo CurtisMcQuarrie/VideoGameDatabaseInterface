@@ -116,10 +116,10 @@ public class GUI {
         tableLabel.setForeground(lightestColor);
         JComboBox<String> tableDropDown = new JComboBox<>(sql.getTableNames());
         tableDropDown.setSelectedIndex(0); // set initial index for dropdown
-        String selectedTable = (String) tableDropDown.getSelectedItem();
+        int selectedTable = tableDropDown.getSelectedIndex();
         JLabel attributeLabel = new JLabel("\tAttributes:\t");
         attributeLabel.setForeground(lightestColor);
-        JComboBox<String> attributeDropDown = new JComboBox<>(sql.getTableAttributes(selectedTable));
+        JComboBox<String> attributeDropDown = new JComboBox<>(sql.getTableAttributes());
 
         // add components
         panel.add(tableLabel);
