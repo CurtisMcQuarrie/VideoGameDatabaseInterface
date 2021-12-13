@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class SQL {
 
     //region fields
-    private String dbFileName = "jdbc:sqlite:G:/University_Backup/Fall2021/comp3380_databases_concepts_and_usage/project/VideoGameDB_Interface/src/Group73_VideoGame_DB.db";
+    private String dbFileName = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
     private String[] queries;
     private String[] tableNames;
     private Connection connection;
@@ -13,6 +13,7 @@ public class SQL {
 
     //region constructors
     public SQL() {
+        System.out.println(dbFileName);
         queries = new String[] {"Hello World", "Good Bye World"};
         initialize();
     }
