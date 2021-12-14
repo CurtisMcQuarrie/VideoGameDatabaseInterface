@@ -38,7 +38,7 @@ public class SQL {
         return tableNames;
     }
 
-    public String[] getTableAttributes(){
+    public String[] getTableAttributes(String selectedTable){
         return currAttributeNames;
     }
     //endregion getters and setters

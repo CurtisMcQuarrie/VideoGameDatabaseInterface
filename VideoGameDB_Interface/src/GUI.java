@@ -120,12 +120,14 @@ public class GUI {
         JLabel attributeLabel = new JLabel("\tAttributes:\t");
         attributeLabel.setForeground(lightestColor);
         JComboBox<String> attributeDropDown = new JComboBox<>(sql.getTableAttributes(selectedTable));
+        JButton button = new JButton("Run Query");
 
         // add components
         panel.add(tableLabel);
         panel.add(tableDropDown);
         panel.add(attributeLabel);
         panel.add(attributeDropDown);
+        panel.add(button);
 
         return panel;
     }
