@@ -5,8 +5,10 @@ public class SQL {
 
     //region fields
     private String dbFileName = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
-    private String[] queries;
+    private String[] queries; //sql code
+    private String[] queryDesc;
     private String[] tableNames;
+    private String[] currAttributeNames;
     private Connection connection;
     private DatabaseMetaData metaData;
     //endregion fields
@@ -23,6 +25,7 @@ public class SQL {
     public void initialize(){
         connect();
         retrieveTableNames();
+        updateAttributes(0);
     }
     //endregion main methods
 
@@ -35,8 +38,8 @@ public class SQL {
         return tableNames;
     }
 
-    public String[] getTableAttributes(String table){
-        return new String[] {"Title", "Rating", "Genre"};
+    public String[] getTableAttributes(){
+        return currAttributeNames;
     }
     //endregion getters and setters
 
@@ -68,10 +71,18 @@ public class SQL {
     //endregion database commands
 
     //region GUI called methods
-    public String[] updateAttributes(String tableName){
+    public String[] updateAttributes(int index){ //not working
         ArrayList<String> attributes = new ArrayList<>();
-
-        return attributes.toArray(new String[attributes.size()]);
+        try{
+            ResultSet resultSet = metaData.getAttributes(null, null, tableNames[index], "%");
+            while (resultSet.next()){
+                attributes.add(resultSet.getString("COLUMN_NAME"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        currAttributeNames = attributes.toArray(new String[attributes.size()]);
+        return currAttributeNames;
     }
     //endregion GUI called methods
 }
