@@ -31,6 +31,7 @@ public class GUI implements ActionListener, ItemListener {
     JComboBox<String> queryDropdown;
     JComboBox<String> tableDropdown;
     JList<String> attributesDropdown;
+    JTextArea resultantSet;
     //endregion fields
 
     //region constructors
@@ -89,6 +90,7 @@ public class GUI implements ActionListener, ItemListener {
         label.setForeground(lightestColor);
         queryDropdown = new JComboBox<>(sql.getQueries());
         queryExecuteButton = new JButton("Run Query");
+        queryExecuteButton.addActionListener(this);
 
         // add components
         panel.add(label);
@@ -105,13 +107,18 @@ public class GUI implements ActionListener, ItemListener {
         panel.setBorder(titleBorder);
 
         // create components
-        JTable table = new JTable();
-        table.setForeground(lightestColor);
-        JScrollPane scrollPane = new JScrollPane(table);
+        //JTable table = new JTable();
+        resultantSet = new JTextArea();
+        resultantSet.setForeground(lightestColor);
+        resultantSet.setBackground(darkestColor);
+        //table.setForeground(lightestColor);
+        JScrollPane scrollPane = new JScrollPane(resultantSet);
+        //scrollPane.setViewportView(resultantSet);
+
         // add button
 
         // add components
-        panel.add(table);
+        //panel.add(resultantSet);
         panel.add(scrollPane);
 
         return panel;
@@ -156,9 +163,13 @@ public class GUI implements ActionListener, ItemListener {
         attributesDropdown.setModel(model);
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        int getQueryIndex = queryDropdown.getSelectedIndex();
+        //int getQueryIndex = queryDropdown.getSelectedIndex();
+        if (e.getSource() == queryExecuteButton){
+            resultantSet.setText(sql.executeMadeQueries(queryDropdown.getSelectedIndex()));
+        }
     }
 
     @Override

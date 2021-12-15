@@ -120,7 +120,7 @@ public class SQL {
         connection = null;
         try {
             connection = DriverManager.getConnection(dbFileName);
-        } catch(SQLException  e){
+        } catch(SQLException e){
             e.printStackTrace();
         }
     }
@@ -157,5 +157,32 @@ public class SQL {
         currAttributeNames = attributes.toArray(new String[attributes.size()]);
         return currAttributeNames;
     }
+
+    public String executeMadeQueries(int index){
+        String result = null;
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQueries[index]);
+            ResultSetMetaData resultMeta = resultSet.getMetaData();
+            // print the resulting table
+            while(resultSet.next()){
+                for (int i = 1; i < resultMeta.getColumnCount(); i++) {
+                    if (i > 1)
+                        result += ",  ";
+                    result += resultSet.getString(i);
+                }
+                result += "\n";
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void executeTableQueries(int tableIndex, String[] attributesList){
+        //this will run the table queries.
+
+    }
     //endregion GUI called methods
+
 }
