@@ -30,7 +30,7 @@ public class GUI implements ActionListener, ItemListener {
     JButton tableExecuteButton;
     JComboBox<String> queryDropdown;
     JComboBox<String> tableDropdown;
-    JList<String> attributesDropDown;
+    JList<String> attributesDropdown;
     //endregion fields
 
     //region constructors
@@ -131,17 +131,16 @@ public class GUI implements ActionListener, ItemListener {
         tableDropdown.addItemListener(this);
         JLabel attributeLabel = new JLabel("\tAttributes:\t");
         attributeLabel.setForeground(lightestColor);
-        attributesDropDown = new JList<>(sql.getTableAttributes());
+        attributesDropdown = new JList<>(sql.getTableAttributes());
         tableExecuteButton = new JButton("Run Query");
 
         // add components
         panel.add(tableLabel);
         panel.add(tableDropdown);
         panel.add(attributeLabel);
-        panel.add(attributesDropDown);
-        panel.add(new JScrollPane(attributesDropDown));
+        panel.add(attributesDropdown);
+        panel.add(new JScrollPane(attributesDropdown, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
         panel.add(tableExecuteButton);
-
 
         return panel;
     }
@@ -149,8 +148,12 @@ public class GUI implements ActionListener, ItemListener {
 
     //region actions
     private void updateAttributesDropdown(){
-        //attributesDropDown.
-        //attributesDropDown.setModel(new DefaultListModel(sql.updateAttributes(tableDropdown.getSelectedIndex())));
+        DefaultListModel<String> model = new DefaultListModel();
+        String[] newAttributes = sql.updateAttributes(tableDropdown.getSelectedIndex());
+        for (int index = 0; index < newAttributes.length; index++) {
+            model.add(index, newAttributes[index]);
+        }
+        attributesDropdown.setModel(model);
     }
 
     @Override

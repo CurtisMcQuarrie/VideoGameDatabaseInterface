@@ -7,7 +7,6 @@ public class SQL {
     private String dbFileName = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
     private String[] queries; //sql code
     private String[] sqlQueries;
-    private String[] queryDesc;
     private String[] tableNames;
     private String[] currAttributeNames;
     private Connection connection;
