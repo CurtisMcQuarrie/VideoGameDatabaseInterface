@@ -15,7 +15,6 @@ public class SQL {
 
     //region constructors
     public SQL() {
-        System.out.println(dbFileName);
         queries = new String[] {"1. Find all the E-rated strategy games that have been developed by developers located in Canada with a critic score worse than 60%.",
                 "2.Find the highest selling game in North America that has a score of above 50% for both user and critic and was made by a publisher that has published over 10 games.",
                 "3.Find the game names, publisher names, and developer names of the game which has the lowest average player base across all regions.",
@@ -159,30 +158,61 @@ public class SQL {
     }
 
     public String executeMadeQueries(int index){
-        String result = null;
+        String result = "";
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQueries[index]);
-            ResultSetMetaData resultMeta = resultSet.getMetaData();
-            // print the resulting table
-            while(resultSet.next()){
-                for (int i = 1; i < resultMeta.getColumnCount(); i++) {
-                    if (i > 1)
-                        result += ",  ";
-                    result += resultSet.getString(i);
-                }
-                result += "\n";
-            }
+            result = formatResultantSet(resultSet);
         } catch (SQLException e){
             e.printStackTrace();
         }
         return result;
     }
 
-    public void executeTableQueries(int tableIndex, String[] attributesList){
-        //this will run the table queries.
-
+    public String executeTableQueries(int tableIndex, String[] attributesList){
+        String result = "";
+        String query = "SELECT ";
+        try{
+            Statement statement = connection.createStatement();
+            if (attributesList == null || attributesList[0].compareTo("*") == 0) {
+                query += "* ";
+            }
+            else {
+                for (int index = 0; index < attributesList.length; index++) {
+                    if (index == attributesList.length) {
+                        query += attributesList[index];
+                    } else {
+                        query += attributesList[index] + ", ";
+                    }
+                }
+            }
+            query += " FROM " + tableNames[tableIndex] + ";";
+            //System.out.println(query);
+            ResultSet resultSet = statement.executeQuery(query);
+            result = formatResultantSet(resultSet);
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        //System.out.println(result);
+        return result;
     }
     //endregion GUI called methods
 
+    private String formatResultantSet(ResultSet resultSet){
+        String result = "";
+        try{
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            while(resultSet.next()){
+                for (int i = 1; i < metaData.getColumnCount(); i++) {
+                    if (i > 1)
+                        result += ",  ";
+                    result += resultSet.getString(i);
+                }
+                result += "\n";
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 }

@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GUI implements ActionListener, ItemListener {
     //region fields
@@ -101,24 +102,22 @@ public class GUI implements ActionListener, ItemListener {
     }
 
     private JPanel setupResultantPanel(){
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(new BorderLayout());
         TitledBorder titleBorder = BorderFactory.createTitledBorder("Resultant Table From Query");
         titleBorder.setTitleColor(lightestColor);
         panel.setBorder(titleBorder);
 
         // create components
-        //JTable table = new JTable();
         resultantSet = new JTextArea();
         resultantSet.setForeground(lightestColor);
         resultantSet.setBackground(darkestColor);
-        //table.setForeground(lightestColor);
         JScrollPane scrollPane = new JScrollPane(resultantSet);
-        //scrollPane.setViewportView(resultantSet);
+        scrollPane.setViewportView(resultantSet);
 
         // add button
 
         // add components
-        //panel.add(resultantSet);
+        panel.add(resultantSet);
         panel.add(scrollPane);
 
         return panel;
@@ -140,6 +139,7 @@ public class GUI implements ActionListener, ItemListener {
         attributeLabel.setForeground(lightestColor);
         attributesDropdown = new JList<>(sql.getTableAttributes());
         tableExecuteButton = new JButton("Run Query");
+        tableExecuteButton.addActionListener(this);
 
         // add components
         panel.add(tableLabel);
@@ -169,6 +169,14 @@ public class GUI implements ActionListener, ItemListener {
         //int getQueryIndex = queryDropdown.getSelectedIndex();
         if (e.getSource() == queryExecuteButton){
             resultantSet.setText(sql.executeMadeQueries(queryDropdown.getSelectedIndex()));
+        }
+        else if(e.getSource() == tableExecuteButton){
+            List<String> attributesList = attributesDropdown.getSelectedValuesList();
+            String[] attributesArray = null;
+            if (attributesList.size() > 0){
+                attributesArray = attributesList.toArray(new String[attributesList.size()]);
+            }
+            resultantSet.setText(sql.executeTableQueries(tableDropdown.getSelectedIndex(), attributesArray));
         }
     }
 
