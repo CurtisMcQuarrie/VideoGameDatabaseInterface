@@ -30,22 +30,8 @@ public class SQL {
         "11.Find all the warnings for each game rating.",
         "12.Find the 5 worst pokemon game made according to user and critic score."};
 
-        sqlQueries = new String[]{"SELECT gameName, DDOff.devName, LOC.country
-                FROM (Developed D LEFT JOIN DeveloperOffices DOff ON D.devName=DOff.devName) DDOff
-                LEFT JOIN Locations Loc ON DDOff.locID=Loc.locID
-                WHERE Loc.country='Canada' AND gameName IN
-                (SELECT gameName FROM Ratings
-                        WHERE rating='E'
-                        UNION
-                        SELECT gameName FROM PublishedVideoGames
-                        WHERE genre='strategy'
-                        UNION
-                        SELECT gameName FROM Scores
-                        WHERE scoreType='Critic' AND scoreValue<=60"};
 
-);
 
-}
         initialize();
 
     }
@@ -73,8 +59,10 @@ public class SQL {
         return currAttributeNames;
     }
 
-    public String []
-    //endregion getters and setters
+    public String[] getSqlQueries() {
+        return sqlQueries;
+    }
+//endregion getters and setters
 
     //region database connection methods
     private void connect(){
