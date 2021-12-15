@@ -30,7 +30,7 @@ public class GUI implements ActionListener, ItemListener {
     JButton tableExecuteButton;
     JComboBox<String> queryDropdown;
     JComboBox<String> tableDropdown;
-    JComboBox<String> attributesDropDown;
+    JList<String> attributesDropDown;
     //endregion fields
 
     //region constructors
@@ -131,7 +131,7 @@ public class GUI implements ActionListener, ItemListener {
         tableDropdown.addItemListener(this);
         JLabel attributeLabel = new JLabel("\tAttributes:\t");
         attributeLabel.setForeground(lightestColor);
-        attributesDropDown = new JComboBox<>(sql.getTableAttributes());
+        attributesDropDown = new JList<>(sql.getTableAttributes());
         tableExecuteButton = new JButton("Run Query");
 
         // add components
@@ -147,7 +147,8 @@ public class GUI implements ActionListener, ItemListener {
 
     //region actions
     private void updateAttributesDropdown(){
-        attributesDropDown.setModel(new DefaultComboBoxModel(sql.updateAttributes(tableDropdown.getSelectedIndex())));
+        //attributesDropDown.
+        //attributesDropDown.setModel(new DefaultListModel<>(sql.updateAttributes(tableDropdown.getSelectedIndex())));
     }
 
     @Override
