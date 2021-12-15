@@ -1,10 +1,15 @@
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-public class GUI {
+public class GUI implements ActionListener, ItemListener {
     //region fields
+    private SQL sql;
     // border fields
     private int prefWidth = 600;
     private int prefHeight = 200;
@@ -20,6 +25,12 @@ public class GUI {
     private Color middleColor = new Color(65, 90, 119);
     private Color lightColor = new Color(119,141,169);
     private Color lightestColor = new Color(224,255,221);
+    // jObjects
+    JButton queryExecuteButton;
+    JButton tableExecuteButton;
+    JComboBox<String> queryDropdown;
+    JComboBox<String> tableDropdown;
+    JComboBox<String> attributesDropDown;
     //endregion fields
 
     //region constructors
@@ -36,7 +47,8 @@ public class GUI {
 
     //region main methods
     public void initialize(SQL sql){
-        setupPanels(sql);
+        this.sql = sql;
+        setupPanels();
         setupFrame();
     }
 
@@ -53,9 +65,9 @@ public class GUI {
         frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.PAGE_AXIS));
     }
 
-    private void setupPanels(SQL sql){
-        panels.add(setupQueryPanel(sql));
-        panels.add(setupTablePanel(sql));
+    private void setupPanels(){
+        panels.add(setupQueryPanel());
+        panels.add(setupTablePanel());
         panels.add(setupResultantPanel());
         for (JPanel panel: panels) {
             panel.setBackground(darkColor);
@@ -66,7 +78,7 @@ public class GUI {
         }
     }
 
-    private JPanel setupQueryPanel(SQL sql){
+    private JPanel setupQueryPanel(){
         JPanel panel = new JPanel();
         TitledBorder titleBorder = BorderFactory.createTitledBorder("SQL Queries");
         titleBorder.setTitleColor(lightestColor);
@@ -75,13 +87,13 @@ public class GUI {
         // create components
         JLabel label = new JLabel("Select a Query:\t");
         label.setForeground(lightestColor);
-        JComboBox<String> queryDropDown = new JComboBox<>(sql.getQueries());
-        JButton button = new JButton("Run Query");
+        queryDropdown = new JComboBox<>(sql.getQueries());
+        queryExecuteButton = new JButton("Run Query");
 
         // add components
         panel.add(label);
-        panel.add(queryDropDown);
-        panel.add(button);
+        panel.add(queryDropdown);
+        panel.add(queryExecuteButton);
 
         return panel;
     }
@@ -105,7 +117,7 @@ public class GUI {
         return panel;
     }
 
-    private JPanel setupTablePanel(SQL sql){
+    private JPanel setupTablePanel(){
         JPanel panel = new JPanel();
         TitledBorder titleBorder = BorderFactory.createTitledBorder("Table Queries");
         titleBorder.setTitleColor(lightestColor);
@@ -114,23 +126,43 @@ public class GUI {
         // create components
         JLabel tableLabel = new JLabel("Table:\t");
         tableLabel.setForeground(lightestColor);
-        JComboBox<String> tableDropDown = new JComboBox<>(sql.getTableNames());
-        tableDropDown.setSelectedIndex(0); // set initial index for dropdown
-        String selectedTable = (String) tableDropDown.getSelectedItem();
+        tableDropdown = new JComboBox<>(sql.getTableNames());
+        tableDropdown.setSelectedIndex(0); // set initial index for dropdown
+        tableDropdown.addItemListener(this);
         JLabel attributeLabel = new JLabel("\tAttributes:\t");
         attributeLabel.setForeground(lightestColor);
-        JComboBox<String> attributeDropDown = new JComboBox<>(sql.getTableAttributes(selectedTable));
-        JButton button = new JButton("Run Query");
+        attributesDropDown = new JComboBox<>(sql.getTableAttributes());
+        tableExecuteButton = new JButton("Run Query");
 
         // add components
         panel.add(tableLabel);
-        panel.add(tableDropDown);
+        panel.add(tableDropdown);
         panel.add(attributeLabel);
-        panel.add(attributeDropDown);
-        panel.add(button);
+        panel.add(attributesDropDown);
+        panel.add(tableExecuteButton);
 
         return panel;
     }
     //endregion setup methods
 
+    //region actions
+    private void updateAttributesDropdown(){
+        attributesDropDown = new JComboBox<>(sql.updateAttributes(tableDropdown.getSelectedIndex()));
+        System.out.println(attributesDropDown.toString());
+        attributesDropDown.updateUI();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getSource() == tableDropdown){
+            updateAttributesDropdown();
+            System.out.println("Dropdown changed!\t" + tableDropdown.getSelectedIndex());
+        }
+    }
+    //endregion actions
 }

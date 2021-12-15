@@ -38,7 +38,7 @@ public class SQL {
         return tableNames;
     }
 
-    public String[] getTableAttributes(String selectedTable){
+    public String[] getTableAttributes(){
         return currAttributeNames;
     }
     //endregion getters and setters
@@ -71,10 +71,11 @@ public class SQL {
     //endregion database commands
 
     //region GUI called methods
-    public String[] updateAttributes(int index){ //not working
+    public String[] updateAttributes(int index){
         ArrayList<String> attributes = new ArrayList<>();
+        attributes.add("*");
         try{
-            ResultSet resultSet = metaData.getAttributes(null, null, tableNames[index], "%");
+            ResultSet resultSet = metaData.getColumns(null, null, tableNames[index], "%");
             while (resultSet.next()){
                 attributes.add(resultSet.getString("COLUMN_NAME"));
             }
