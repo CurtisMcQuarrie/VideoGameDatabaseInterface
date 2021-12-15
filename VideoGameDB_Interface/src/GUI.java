@@ -147,9 +147,7 @@ public class GUI implements ActionListener, ItemListener {
 
     //region actions
     private void updateAttributesDropdown(){
-        attributesDropDown = new JComboBox<>(sql.updateAttributes(tableDropdown.getSelectedIndex()));
-        System.out.println(attributesDropDown.toString());
-        attributesDropDown.updateUI();
+        attributesDropDown.setModel(new DefaultComboBoxModel(sql.updateAttributes(tableDropdown.getSelectedIndex())));
     }
 
     @Override
@@ -161,7 +159,6 @@ public class GUI implements ActionListener, ItemListener {
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == tableDropdown){
             updateAttributesDropdown();
-            System.out.println("Dropdown changed!\t" + tableDropdown.getSelectedIndex());
         }
     }
     //endregion actions
