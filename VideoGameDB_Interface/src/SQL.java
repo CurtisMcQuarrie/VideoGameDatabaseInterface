@@ -16,7 +16,18 @@ public class SQL {
     //region constructors
     public SQL() {
         System.out.println(dbFileName);
-        queries = new String[] {"Hello World", "Good Bye World"};
+        queries = new String[] {"1. Find all the E-rated strategy games that have been developed by developers located in Canada with a critic score worse than 60%.",
+                "2.Find the highest selling game in North America that has a score of above 50% for both user and critic and was made by a publisher that has published over 10 games.",
+                "3.Find the game names, publisher names, and developer names of the game which has the lowest average player base across all regions.",
+        "4.Find all the games that have Japan sales as their highest sales numbers and were developed in Japan.",
+        "5.Find how many players in Europe are playing a game with a user score above 80%? Display alongside with the gameName and genre .",
+        "6.Find all the countries that have developed the most games with an average critic and user score of over 80%.",
+        "7.Show all the publishers that published a game that is within the top 50 by user scores and is in the Shooter genre.",
+        "8.Show each “SoulCalibur” game with over 1 mil NA players.",
+        "9.Find the developers that released a game before 2000 and placed it in the top 50 for global sales. Display the dev name, release year, number of global players, critic score and user score.",
+        "10.Find all video games that are on only one platform whose total player count across all regions is greater than a million.",
+        "11.Find all the warnings for each game rating.",
+        "12.Find the 5 worst pokemon game made according to user and critic score."};
         initialize();
     }
     //endregion constructors
