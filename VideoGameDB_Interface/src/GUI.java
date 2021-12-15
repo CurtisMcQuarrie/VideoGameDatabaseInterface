@@ -139,7 +139,9 @@ public class GUI implements ActionListener, ItemListener {
         panel.add(tableDropdown);
         panel.add(attributeLabel);
         panel.add(attributesDropDown);
+        panel.add(new JScrollPane(attributesDropDown));
         panel.add(tableExecuteButton);
+
 
         return panel;
     }
@@ -148,7 +150,7 @@ public class GUI implements ActionListener, ItemListener {
     //region actions
     private void updateAttributesDropdown(){
         //attributesDropDown.
-        //attributesDropDown.setModel(new DefaultListModel<>(sql.updateAttributes(tableDropdown.getSelectedIndex())));
+        //attributesDropDown.setModel(new DefaultListModel(sql.updateAttributes(tableDropdown.getSelectedIndex())));
     }
 
     @Override
