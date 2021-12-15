@@ -6,6 +6,7 @@ public class SQL {
     //region fields
     private String dbFileName = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
     private String[] queries; //sql code
+    private String[] sqlQueries;
     private String[] queryDesc;
     private String[] tableNames;
     private String[] currAttributeNames;
@@ -28,8 +29,27 @@ public class SQL {
         "10.Find all video games that are on only one platform whose total player count across all regions is greater than a million.",
         "11.Find all the warnings for each game rating.",
         "12.Find the 5 worst pokemon game made according to user and critic score."};
+
+        sqlQueries = new String[]{"SELECT gameName, DDOff.devName, LOC.country
+                FROM (Developed D LEFT JOIN DeveloperOffices DOff ON D.devName=DOff.devName) DDOff
+                LEFT JOIN Locations Loc ON DDOff.locID=Loc.locID
+                WHERE Loc.country='Canada' AND gameName IN
+                (SELECT gameName FROM Ratings
+                        WHERE rating='E'
+                        UNION
+                        SELECT gameName FROM PublishedVideoGames
+                        WHERE genre='strategy'
+                        UNION
+                        SELECT gameName FROM Scores
+                        WHERE scoreType='Critic' AND scoreValue<=60"};
+
+);
+
+}
         initialize();
+
     }
+
     //endregion constructors
 
     //region main methods
@@ -52,6 +72,8 @@ public class SQL {
     public String[] getTableAttributes(){
         return currAttributeNames;
     }
+
+    public String []
     //endregion getters and setters
 
     //region database connection methods
