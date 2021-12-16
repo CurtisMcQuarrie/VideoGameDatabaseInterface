@@ -15,73 +15,53 @@ public class SQL {
 
     //region constructors
     public SQL() {
-        queries = new String[] {"1. Find all the E-rated strategy games that have been developed by developers located in Canada with a critic score worse than 60%.",
-                "2.Find the highest selling game in North America that has a score of above 50% for both user and critic and was made by a publisher that has published over 10 games.",
-                "3.Find the game names, publisher names, and developer names of the game which has the lowest average player base across all regions.",
-        "4.Find all the games that have Japan sales as their highest sales numbers and were developed in Japan.",
-        "5.Find how many players in Europe are playing a game with a user score above 80%? Display alongside with the gameName and genre .",
-        "6.Find all the countries that have developed the most games with an average critic and user score of over 80%.",
-        "7.Show all the publishers that published a game that is within the top 50 by user scores and is in the Shooter genre.",
-        "8.Show each “SoulCalibur” game with over 1 mil NA players.",
-        "9.Find the developers that released a game before 2000 and placed it in the top 50 for global sales. Display the dev name, release year, number of global players, critic score and user score.",
-        "10.Find all video games that are on only one platform whose total player count across all regions is greater than a million.",
-        "11.Find all the warnings for each game rating.",
-        "12.Find the 5 worst pokemon game made according to user and critic score."};
+        queries = new String[] {"Find all E-rated strategy games that have been developed by developers located in Canada, with a critic score worse than 60%.",
+                "Find the highest selling game in North America that has a user and critic score of above 50%. The publisher needs to have published over 10 games.",
+                "Find the games which have the lowest average player base across all regions.",
+                "Find the games that have Japan sales as their highest sales numbers and were developed in Japan.",
+                "Find how many players in Europe are playing a game with a user score above 80%.",
+                "Find the countries that have developed the most games with an average critic and user score over 80%.",
+                "Show all the publishers that published a Shooter game that is within the top 50 user scores.",
+                "Show 'SoulCalibur' games that have over 1 million North American players.",
+                "Find developers that released a game before 2000 and placed in the top 50 for global sales.",
+                "Find video games that are on only available on one platform and whose total player count across all regions is greater than a million.",
+                "Find all the warnings for each game rating.",
+                "Find the 5 worst pokemon game made according to user and critic score."};
 
-        sqlQueries = new String[] {"\n" +
-                "\n" +
-                "SELECT gameName, DDOff.devName, LOC.country\n" +
-                "FROM (Developed D LEFT JOIN DeveloperOffices DOff ON D.devName=DOff.devName) DDOff\n" +
-                "LEFT JOIN Locations Loc ON DDOff.locID=Loc.locID\n" +
-                "WHERE Loc.country='Canada' AND gameName IN\n" +
-                "(SELECT gameName FROM Ratings\n" +
-                "WHERE rating='E'\n" +
-                "UNION\n" +
-                "SELECT gameName FROM PublishedVideoGames\n" +
-                "WHERE genre='strategy'\n" +
-                "UNION\n" +
-                "SELECT gameName FROM Scores\n" +
-                "WHERE scoreType='Critic' AND scoreValue<=60);\n"," select gameName,platform, pubName, naSales from PublishedVideoGames natural join publishers natural join sales where gamesPublished > 10 AND gameName in( select gameName from PublishedVideoGames natural join sales natural join scores where (scoreValue/outOf > 0.5)) order by naSales Desc ;",
-        "SELECT gameName, platform, pubName, devName, (globalCount + naCount + euCount + jpCount + otherCount)/5 AS avgPlayerCount\n" +
-                "FROM\n" +
-                "PublishedVideoGames NATURAL JOIN PlayedBy NATURAL JOIN Players NATURAL JOIN Developed\n" +
-                "WHERE avgPlayerCount in\n" +
-                "(SELECT MIN((globalCount + naCount + euCount + jpCount + otherCount)/5) AS minPlayerCount\n" +
-                "FROM\n" +
-                "PublishedVideoGames NATURAL JOIN PlayedBy NATURAL JOIN Players NATURAL JOIN Developed);\n","select country,gameName,platform from Locations natural join DeveloperOffices \n" +
+        sqlQueries = new String[] {"SELECT gameName, DDOff.devName, LOC.country FROM (Developed D LEFT JOIN DeveloperOffices DOff ON D.devName=DOff.devName) DDOff\n" +
+                "LEFT JOIN Locations Loc ON DDOff.locID=Loc.locID WHERE Loc.country='Canada' AND gameName IN\n" +
+                "(SELECT gameName FROM Ratings WHERE rating='E' UNION SELECT gameName FROM PublishedVideoGames\n" +
+                "WHERE genre='strategy' UNION SELECT gameName FROM Scores WHERE scoreType='Critic' AND scoreValue<=60);",
+                "SELECT gameName,platform, pubName, naSales from PublishedVideoGames natural join publishers natural join sales where gamesPublished > 10 AND gameName in( select gameName from PublishedVideoGames natural join sales natural join scores where (scoreValue/outOf > 0.5)) order by naSales Desc ;",
+                "SELECT gameName, platform, pubName, devName, (globalCount + naCount + euCount + jpCount + otherCount)/5 AS avgPlayerCount\n" +
+                "FROM PublishedVideoGames NATURAL JOIN PlayedBy NATURAL JOIN Players NATURAL JOIN Developed\n" +
+                "WHERE avgPlayerCount in (SELECT MIN((globalCount + naCount + euCount + jpCount + otherCount)/5) AS minPlayerCount\n" +
+                "FROM PublishedVideoGames NATURAL JOIN PlayedBy NATURAL JOIN Players NATURAL JOIN Developed);",
+                "select country,gameName,platform from Locations natural join DeveloperOffices \n" +
                 "natural join Developed where country='Japan' and gameName in(\n" +
-                "select gameName from sales where jpSales> naSales and jpSales>euSales and jpSales>otherSales ) \n","SELECT gameName, platform, euCount AS num_Of_EU_Players\n" +
-                "FROM PlayedBy PB LEFT JOIN Players P ON PB.playerGroupID=P.playerGroupID\n" +
-                "WHERE gameName IN\n" +
-                "(SELECT PVG.gameName\n" +
+                "select gameName from sales where jpSales> naSales and jpSales>euSales and jpSales>otherSales ) \n",
+                "SELECT gameName, platform, euCount AS num_Of_EU_Players\n" +
+                "FROM PlayedBy PB LEFT JOIN Players P ON PB.playerGroupID=P.playerGroupID WHERE gameName IN (SELECT PVG.gameName\n" +
                 "FROM PublishedVideoGames PVG LEFT JOIN Scores S ON PVG.gameName=S.gameName\n" +
-                "WHERE S.scoreType='User' AND S.scoreValue>=8\n" +
-                "GROUP BY PVG.gameName, PVG.platform)\n" +
-                "ORDER BY euCount DESC;\n","  SELECT distinct country FROM Locations WHERE country in ( SELECT country FROM PublishedVideoGames NATURAL JOIN Developed NATURAL JOIN DeveloperOffices NATURAL JOIN Locations NATURAL JOIN Scores GROUP BY gameName, platform HAVING AVG(scoreValue/outof) > 0.8);\n","" +
+                "WHERE S.scoreType='User' AND S.scoreValue>=8 GROUP BY PVG.gameName, PVG.platform) ORDER BY euCount DESC;",
+                "SELECT distinct country FROM Locations WHERE country in ( SELECT country FROM PublishedVideoGames NATURAL JOIN Developed NATURAL JOIN DeveloperOffices NATURAL JOIN Locations NATURAL JOIN Scores GROUP BY gameName, platform HAVING AVG(scoreValue/outof) > 0.8);\n","" +
                 "SELECT pubName, gameName, platform, scoreValue\n" +
                 "FROM (SELECT  * FROM PublishedVideoGames PVG LEFT JOIN Scores S ON PVG.gameName=S.gameName AND PVG.platform=S.platform\n" +
-                "WHERE scoreType='User'\n" +
-                "ORDER BY scoreValue DESC\n" +
-                "LIMIT 50)\n" +
-                "WHERE genre='Shooter';\n","select gameName,platform,naCount from PublishedVideoGames natural join playedBy natural join players where naCount > 1 And gameName like 'SoulCalibur%' ;\n",
-        "select Developed.devName, PublishedVideoGames.releaseYear, sales.globalSales,\n" +
+                "WHERE scoreType='User' ORDER BY scoreValue DESC LIMIT 50) WHERE genre='Shooter';",
+                "select gameName,platform,naCount from PublishedVideoGames natural join playedBy natural join players where naCount > 1 And gameName like 'SoulCalibur%' ;\n",
+                "select Developed.devName, PublishedVideoGames.releaseYear, sales.globalSales,\n" +
                 "players.globalCount as numOfPlayers, Scores.scoreValue/Scores.outOf as score\n" +
                 "from Developed natural join PublishedVideoGames\n" +
                 "natural join sales natural join scores natural join PlayedBy \n" +
-                "natural join Players\n" +
-                "where releaseYear < 2000\n" +
-                "order by globalSales DESC, numOfPlayers DESC, score DESC \n" +
-                "Limit 50\n","select gameName,platform,globalCount from PublishedVideoGames natural join players natural join\n" +
-                "     PlayedBy where globalCount > 1 GROUP BY gameName HAVING count(platform)=1 ;\n" +
-                "\n","SELECT rating, MAX(drugRef) AS drugRef, MAX(blood) As blood, MAX(bloodAndGore) AS bloodAndGore, MAX(cartoonViolence) AS cartoonViolence, MAX(fantasyViolence) AS fantasyViolence, MAX(animatedBlood) AS animatedBlood, MAX(alcoholRef) AS alcoholRef, MAX(crudeHumor) AS crudeHumor\n" +
+                "natural join Players where releaseYear < 2000\n" +
+                "order by globalSales DESC, numOfPlayers DESC, score DESC Limit 50\n",
+                "select gameName,platform,globalCount from PublishedVideoGames natural join players natural join\n" +
+                "PlayedBy where globalCount > 1 GROUP BY gameName HAVING count(platform)=1;",
+                "SELECT rating, MAX(drugRef) AS drugRef, MAX(blood) As blood, MAX(bloodAndGore) AS bloodAndGore, MAX(cartoonViolence) AS cartoonViolence, MAX(fantasyViolence) AS fantasyViolence, MAX(animatedBlood) AS animatedBlood, MAX(alcoholRef) AS alcoholRef, MAX(crudeHumor) AS crudeHumor\n" +
                 "FROM Ratings NATURAL JOIN GameRatings\n" +
-                "GROUP BY rating;\n","SELECT gameName, platform, AVG(scoreValue/outOf) as avg_percent\n" +
-                "FROM Scores\n" +
-                "WHERE gameName LIKE '%Pokemon%'\n" +
-                "GROUP BY gameName, platform\n" +
-                "ORDER BY avg_percent ASC\n" +
-                "LIMIT 5;\n" +
-                "\n"};
+                "GROUP BY rating;",
+                "SELECT gameName, platform, AVG(scoreValue/outOf) as avg_percent FROM Scores WHERE gameName LIKE '%Pokemon%'\n" +
+                "GROUP BY gameName, platform ORDER BY avg_percent ASC LIMIT 5;"};
         initialize();
 
     }
@@ -175,19 +155,20 @@ public class SQL {
         try{
             Statement statement = connection.createStatement();
             if (attributesList == null || attributesList[0].compareTo("*") == 0) {
-                query += "* ";
+                query += "*";
             }
             else {
                 for (int index = 0; index < attributesList.length; index++) {
-                    if (index == attributesList.length) {
+                    if (index == attributesList.length-1) {
                         query += attributesList[index];
                     } else {
                         query += attributesList[index] + ", ";
                     }
+                    System.out.println(attributesList[index]);
                 }
             }
             query += " FROM " + tableNames[tableIndex] + ";";
-            //System.out.println(query);
+            System.out.println(query);
             ResultSet resultSet = statement.executeQuery(query);
             result = formatResultantSet(resultSet);
         } catch(SQLException e){
@@ -202,11 +183,20 @@ public class SQL {
         String result = "";
         try{
             ResultSetMetaData metaData = resultSet.getMetaData();
-            while(resultSet.next()){
-                for (int i = 1; i < metaData.getColumnCount(); i++) {
-                    if (i > 1)
+            for (int i = 0; i < metaData.getColumnCount(); i++) { //retrieves column labels
+                if (i == metaData.getColumnCount()-1)
+                    result += metaData.getColumnName(i+1);
+                else
+                    result += metaData.getColumnName(i+1) + ", ";
+            }
+            result += "\n";
+            while(resultSet.next()){ //cycles through rows
+                for (int i = 0; i < metaData.getColumnCount(); i++) { //cycles through columns
+                    if (i > 0) {
                         result += ",  ";
-                    result += resultSet.getString(i);
+                    }
+                    result += resultSet.getString(i+1);
+                    //System.out.println(resultSet.getString(i+1));
                 }
                 result += "\n";
             }
@@ -215,4 +205,6 @@ public class SQL {
         }
         return result;
     }
+
+
 }
