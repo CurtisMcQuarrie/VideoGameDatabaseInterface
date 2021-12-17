@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,7 +40,9 @@ public class GUI implements ActionListener, ItemListener {
     private JComboBox<String> tableDropdown;
     private JList<String> attributeList;
     private JScrollPane attributeListScroller;
-    private JTextArea resultantSet;
+    private JTable resultTable;
+    private JScrollPane resultTableScroller;
+    private JButton toCSVButton;
     //endregion fields
 
     //region constructors
@@ -80,7 +83,6 @@ public class GUI implements ActionListener, ItemListener {
         for (JPanel panel: panels) {
             panel.setBackground(darkestColor);
             panel.setLayout(new FlowLayout());
-            panel.setPreferredSize(new Dimension(prefWidth, prefHeight));
             panel.setMinimumSize(new Dimension(minWidth, minHeight));
             frame.add(panel);
         }
@@ -88,12 +90,13 @@ public class GUI implements ActionListener, ItemListener {
 
     private JPanel setupQueryPanel(){
         JPanel panel = createPanel("SQL Queries", new BorderLayout());
-        //panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setPreferredSize(new Dimension(prefWidth, prefHeight));
 
         // create components
         JLabel label = createLabel("Select a Query:");
+
         queryDropdown = new JComboBox<>(sql.getQueries());
-        //queryDropdown.setRenderer(new PanelRenderer(50));
+
         queryExecuteButton = new JButton("Run");
         queryExecuteButton.setFont(font);
         queryExecuteButton.addActionListener(this);
@@ -108,23 +111,28 @@ public class GUI implements ActionListener, ItemListener {
 
     private JPanel setupResultantPanel(){
         JPanel panel = createPanel("Resultant Set", new BorderLayout());
+        panel.setPreferredSize(new Dimension(prefWidth, prefHeight+50));
 
         // create components
-        resultantSet = new JTextArea();
-        resultantSet.setForeground(lightestColor);
-        resultantSet.setBackground(darkestColor);
-        JScrollPane scrollPane = new JScrollPane(resultantSet);
-        scrollPane.setViewportView(resultantSet);
+        resultTable = new JTable();
+        resultTable.setForeground(lightestColor);
+        resultTable.setBackground(darkestColor);
 
-        // add components
-        panel.add(resultantSet);
-        panel.add(scrollPane);
+        resultTableScroller  = new JScrollPane(resultTable);
+        resultTableScroller.setPreferredSize(new Dimension(800, 150));
+
+        toCSVButton = new JButton("Write CSV");
+        toCSVButton.addActionListener(this);
+
+        panel.add(resultTableScroller, BorderLayout.CENTER);
+        panel.add(toCSVButton);
 
         return panel;
     }
 
     private JPanel setupTablePanel(){
         JPanel panel = createPanel("Table Queries", new BorderLayout());
+        panel.setPreferredSize(new Dimension(prefWidth, prefHeight));
 
         // create components
         JLabel tableLabel = createLabel("Table:");
@@ -140,7 +148,6 @@ public class GUI implements ActionListener, ItemListener {
         attributeList.setVisibleRowCount(5);
         attributeListScroller = new JScrollPane(attributeList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         attributeListScroller.setPreferredSize(new Dimension(115,90));
-
         tableExecuteButton = new JButton("Run");
         tableExecuteButton.setFont(font);
         tableExecuteButton.addActionListener(this);
@@ -191,15 +198,20 @@ public class GUI implements ActionListener, ItemListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == queryExecuteButton){
-            resultantSet.setText(sql.executeMadeQueries(queryDropdown.getSelectedIndex()));
+            sql.executeMadeQueries(queryDropdown.getSelectedIndex());
+            resultTable.setModel(new DefaultTableModel(sql.getCurrTableData(), sql.getCurrTableColumnNames()));
         }
-        else if(e.getSource() == tableExecuteButton){
+        else if (e.getSource() == tableExecuteButton){
             List<String> attributesList = this.attributeList.getSelectedValuesList();
             String[] attributesArray = null;
             if (attributesList.size() > 0){
                 attributesArray = attributesList.toArray(new String[attributesList.size()]);
             }
-            resultantSet.setText(sql.executeTableQueries(tableDropdown.getSelectedIndex(), attributesArray));
+            sql.executeTableQueries(tableDropdown.getSelectedIndex(), attributesArray);
+            resultTable.setModel(new DefaultTableModel(sql.getCurrTableData(), sql.getCurrTableColumnNames()));
+        }
+        else if (e.getSource() == toCSVButton){
+
         }
     }
 
