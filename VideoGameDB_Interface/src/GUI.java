@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -171,15 +170,6 @@ public class GUI implements ActionListener, ItemListener {
         return jLabel;
     }
 
-    private JPanel createPanel(String title){
-        JPanel panel = new JPanel();
-        TitledBorder titleBorder = BorderFactory.createTitledBorder(title);
-        titleBorder.setTitleColor(lightestColor);
-        titleBorder.setTitleFont(font);
-        panel.setBorder(titleBorder);
-        return panel;
-    }
-
     private JPanel createPanel(String title, LayoutManager layoutManager){
         JPanel panel = new JPanel(layoutManager);
         TitledBorder titleBorder = BorderFactory.createTitledBorder(title);
@@ -189,10 +179,6 @@ public class GUI implements ActionListener, ItemListener {
         return panel;
     }
     //endregion jcomponents creation methods
-
-    //region actions methods
-
-    //endregion actions methods
 
     //region listener methods
     @Override

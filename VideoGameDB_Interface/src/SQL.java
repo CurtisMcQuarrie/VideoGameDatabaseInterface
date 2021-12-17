@@ -7,7 +7,7 @@ public class SQL {
 
     //region fields
     private final int MAX_ROW_COUNT = 2500;
-    private String dbFileName = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
+    private final String DB_FILE_NAME = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
     private String csvText;
     private String[] queries; //sql code
     private String[] sqlQueries;
@@ -95,10 +95,6 @@ public class SQL {
         return currAttributeNames;
     }
 
-    public String[] getSqlQueries() {
-        return sqlQueries;
-    }
-
     public String[] getCurrTableColumnNames() {
         return currTableColumnNames;
     }
@@ -110,13 +106,13 @@ public class SQL {
     public String getCSVText() {
         return csvText;
     }
-//endregion getters and setters
+    //endregion getters and setters
 
     //region database connection methods
     private void connect(){
         connection = null;
         try {
-            connection = DriverManager.getConnection(dbFileName);
+            connection = DriverManager.getConnection(DB_FILE_NAME);
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -124,117 +120,6 @@ public class SQL {
     //endregion database connection methods
 
     //region database commands
-    private void retrieveTableNames(){
-       try{
-           metaData = connection.getMetaData();
-           ResultSet tables = metaData.getTables(null, null,"%" ,null);
-           ArrayList<String> namesList = new ArrayList<>();
-           while(tables.next()){
-                namesList.add(tables.getString("TABLE_NAME"));
-           }
-           tableNames = namesList.toArray(new String[namesList.size()]);
-       } catch (SQLException e){
-           e.printStackTrace();
-       }
-    }
-    //endregion database commands
-
-    //region GUI called methods
-
-    public void exportToCsv(String result) {
-
-        String new_result = "";
-        Scanner scan = new Scanner(result);
-        String line = scan.nextLine();
-        String[] nOfCommas = line.split(",");
-        while (scan.hasNextLine()) {
-            String[] newLine = line.split(",");
-            if (newLine.length > nOfCommas.length) {
-                String editedLine = "";
-                editedLine += newLine[0] + newLine[1] + ",";
-                //   editedLine+=newLine[2] + "," + newLine[3] ;
-                for (int i = 2; i < newLine.length; i++) {
-                    editedLine += newLine[i] + ",";
-                }
-
-                new_result += editedLine + "\n";
-
-            } else {
-                new_result += line + "\n";
-            }
-            line = scan.nextLine();
-        }
-
-        //  System.out.println(new_result);
-
-        try {
-            FileWriter csvFile = new FileWriter("csvOutput.CSV");
-            csvFile.write(new_result);
-            csvFile.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String[] updateAttributes(int index){
-        ArrayList<String> attributes = new ArrayList<>();
-        attributes.add("*");
-        try{
-            ResultSet resultSet = metaData.getColumns(null, null, tableNames[index], "%");
-            while (resultSet.next()){
-                attributes.add(resultSet.getString("COLUMN_NAME"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        currAttributeNames = attributes.toArray(new String[attributes.size()]);
-        return currAttributeNames;
-    }
-
-    public String executeMadeQueries(int index){
-        String result = "";
-        try {
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(sqlQueries[index]);
-            result = formatResultantSet(resultSet);
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-    public String executeTableQueries(int tableIndex, String[] attributesList){
-        String result = "";
-        String query = "SELECT ";
-        try{
-            Statement statement = connection.createStatement();
-            if (attributesList == null || attributesList[0].compareTo("*") == 0) {
-                query += "*";
-            }
-            else {
-                for (int index = 0; index < attributesList.length; index++) {
-                    if (index == attributesList.length-1) {
-                        query += attributesList[index];
-                    } else {
-                        query += attributesList[index] + ", ";
-                    }
-                    System.out.println(attributesList[index]);
-                }
-            }
-            query += " FROM " + tableNames[tableIndex] + " LIMIT " + MAX_ROW_COUNT + ";";
-            System.out.println(query);
-            ResultSet resultSet = statement.executeQuery(query);
-            result = formatResultantSet(resultSet);
-        } catch(SQLException e){
-            e.printStackTrace();
-        }
-        //System.out.println(result);
-        return result;
-    }
-
-    //endregion GUI called methods
-
     private String formatResultantSet(ResultSet resultSet){
         String result = "";
         try{
@@ -269,11 +154,111 @@ public class SQL {
                 }
             }
             currTableData = tempTableData;
-        } catch(SQLException e){
+        } catch(SQLException e) {
             e.printStackTrace();
         }
         csvText = result;
         return result;
     }
+
+    private void retrieveTableNames(){
+       try{
+           metaData = connection.getMetaData();
+           ResultSet tables = metaData.getTables(null, null,"%" ,null);
+           ArrayList<String> namesList = new ArrayList<>();
+           while(tables.next()){
+                namesList.add(tables.getString("TABLE_NAME"));
+           }
+           tableNames = namesList.toArray(new String[namesList.size()]);
+       } catch (SQLException e){
+           e.printStackTrace();
+       }
+    }
+    //endregion database commands
+
+    //region GUI called methods
+    public String executeMadeQueries(int index){
+        String result = "";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sqlQueries[index]);
+            result = formatResultantSet(resultSet);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public String executeTableQueries(int tableIndex, String[] attributesList){
+        String result = "";
+        String query = "SELECT ";
+        try{
+            Statement statement = connection.createStatement();
+            if (attributesList == null || attributesList[0].compareTo("*") == 0) {
+                query += "*";
+            }
+            else {
+                for (int index = 0; index < attributesList.length; index++) {
+                    if (index == attributesList.length-1) {
+                        query += attributesList[index];
+                    } else {
+                        query += attributesList[index] + ", ";
+                    }
+                }
+            }
+            query += " FROM " + tableNames[tableIndex] + " LIMIT " + MAX_ROW_COUNT + ";";
+            ResultSet resultSet = statement.executeQuery(query);
+            result = formatResultantSet(resultSet);
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void exportToCsv(String result) {
+        if(result != null){
+            String new_result = "";
+            Scanner scan = new Scanner(result);
+            String line = scan.nextLine();
+            String[] nOfCommas = line.split(",");
+            while (scan.hasNextLine()) {
+                String[] newLine = line.split(",");
+                if (newLine.length > nOfCommas.length) {
+                    String editedLine = "";
+                    editedLine += newLine[0] + newLine[1] + ",";
+                    for (int i = 2; i < newLine.length; i++) {
+                        editedLine += newLine[i] + ",";
+                    }
+                    new_result += editedLine + "\n";
+                } else {
+                    new_result += line + "\n";
+                }
+                line = scan.nextLine();
+            }
+            try {
+                FileWriter csvFile = new FileWriter("csvOutput.CSV");
+                csvFile.write(new_result);
+                csvFile.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String[] updateAttributes(int index){
+        ArrayList<String> attributes = new ArrayList<>();
+        attributes.add("*");
+        try{
+            ResultSet resultSet = metaData.getColumns(null, null, tableNames[index], "%");
+            while (resultSet.next()){
+                attributes.add(resultSet.getString("COLUMN_NAME"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        currAttributeNames = attributes.toArray(new String[attributes.size()]);
+        return currAttributeNames;
+    }
+    //endregion GUI called methods
 
 }
