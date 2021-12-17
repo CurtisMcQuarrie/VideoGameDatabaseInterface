@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -118,15 +119,15 @@ public class GUI implements ActionListener, ItemListener {
         JScrollPane scrollPane = new JScrollPane(resultantSet);
         scrollPane.setViewportView(resultantSet);
 
-        /*resultTable = new JTable();
+        resultTable = new JTable();
         resultTable.setForeground(lightestColor);
         resultTable.setBackground(darkestColor);
         resultTableScroller  = new JScrollPane(resultTable);
-        resultTableScroller.setPreferredSize(new Dimension(115,90));*/
+        resultTableScroller.setPreferredSize(new Dimension(800, 150));
         // add components
-        panel.add(resultantSet);
-        panel.add(scrollPane);
-        /*panel.add(resultTableScroller);*/
+        /*panel.add(resultantSet);
+        panel.add(scrollPane);*/
+        panel.add(resultTableScroller, BorderLayout.CENTER);
 
         return panel;
     }
@@ -199,7 +200,9 @@ public class GUI implements ActionListener, ItemListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == queryExecuteButton){
-            resultantSet.setText(sql.executeMadeQueries(queryDropdown.getSelectedIndex()));
+            //resultantSet.setText(sql.executeMadeQueries(queryDropdown.getSelectedIndex()));
+            sql.executeMadeQueries(queryDropdown.getSelectedIndex());
+            resultTable.setModel(new DefaultTableModel(sql.getCurrTableData(), sql.getCurrTableColumnNames()));
         }
         else if(e.getSource() == tableExecuteButton){
             List<String> attributesList = this.attributeList.getSelectedValuesList();
@@ -207,10 +210,19 @@ public class GUI implements ActionListener, ItemListener {
             if (attributesList.size() > 0){
                 attributesArray = attributesList.toArray(new String[attributesList.size()]);
             }
-            resultantSet.setText(sql.executeTableQueries(tableDropdown.getSelectedIndex(), attributesArray));
-            String[] columnNames = sql.getCurrTableColumnNames();
-            if (columnNames != null)
-                System.out.println(columnNames.toString());
+            sql.executeTableQueries(tableDropdown.getSelectedIndex(), attributesArray);
+            //resultTable = new JTable(sql.getCurrTableColumnNames(), sql.getCurrTableData());
+            resultTable.setModel(new DefaultTableModel(sql.getCurrTableData(), sql.getCurrTableColumnNames()));
+            //resultantSet.setText(sql.executeTableQueries(tableDropdown.getSelectedIndex(), attributesArray));
+
+            /*String[] columnNames = sql.getCurrTableColumnNames();
+            if (columnNames != null) {
+                String columnNamesString = "";
+                for (int i = 0; i < columnNames.length; i++) {
+                    columnNamesString += columnNames[i] + " ";
+                }
+                System.out.println(columnNamesString);
+            }*/
         }
     }
 
