@@ -73,39 +73,43 @@ public class SQL {
 
     }
 
+
     public void exportToCsv(String result) {
 
-        String new_result = "" ;
-        Scanner scan = new Scanner(result) ;
-        String headers =  scan.nextLine() ;
+        String new_result = "";
+        Scanner scan = new Scanner(result);
+        String line = scan.nextLine();
+        String[] nOfCommas = line.split(",");
+        while (scan.hasNextLine()) {
+            String[] newLine = line.split(",");
+            if (newLine.length > nOfCommas.length) {
+                String editedLine = "";
+                editedLine += newLine[0] + newLine[1] + ",";
+                //   editedLine+=newLine[2] + "," + newLine[3] ;
+                for (int i = 2; i < newLine.length; i++) {
+                    editedLine += newLine[i] + ",";
+                }
 
-        System.out.println(headers) ;
+                new_result += editedLine + "\n";
 
-        String[] columnsLength = headers.split(",");
+            } else {
+                new_result += line + "\n";
+            }
 
-        for(int i = 0 ; i <result.length() ; i++){
 
-
-
+            line = scan.nextLine();
         }
 
+      //  System.out.println(new_result);
 
         try {
 
 
+            FileWriter csvFile = new FileWriter("csvOutput.CSV");
+            csvFile.write(new_result);
+            csvFile.close();
 
-         //   String[] columnsLength = headers.split(",") ;
-
-            //System.out.println(columnsLength.length) ;
-
-
-            FileWriter csvFile = new FileWriter("csvOutput.CSV") ;
-            csvFile.write(result);
-            csvFile.close() ;
-
-        }
-
-        catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
