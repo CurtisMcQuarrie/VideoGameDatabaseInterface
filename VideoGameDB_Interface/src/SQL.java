@@ -1,11 +1,14 @@
+import java.io.FileWriter;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class SQL {
 
     //region fields
     private final int MAX_ROW_COUNT = 2500;
     private String dbFileName = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
+    private String csvText;
     private String[] queries; //sql code
     private String[] sqlQueries;
     private String[] tableNames;
@@ -103,6 +106,10 @@ public class SQL {
     public Object[][] getCurrTableData() {
         return currTableData;
     }
+
+    public String getCSVText() {
+        return csvText;
+    }
 //endregion getters and setters
 
     //region database connection methods
@@ -133,6 +140,43 @@ public class SQL {
     //endregion database commands
 
     //region GUI called methods
+
+    public void exportToCsv(String result) {
+
+        String new_result = "";
+        Scanner scan = new Scanner(result);
+        String line = scan.nextLine();
+        String[] nOfCommas = line.split(",");
+        while (scan.hasNextLine()) {
+            String[] newLine = line.split(",");
+            if (newLine.length > nOfCommas.length) {
+                String editedLine = "";
+                editedLine += newLine[0] + newLine[1] + ",";
+                //   editedLine+=newLine[2] + "," + newLine[3] ;
+                for (int i = 2; i < newLine.length; i++) {
+                    editedLine += newLine[i] + ",";
+                }
+
+                new_result += editedLine + "\n";
+
+            } else {
+                new_result += line + "\n";
+            }
+            line = scan.nextLine();
+        }
+
+        //  System.out.println(new_result);
+
+        try {
+            FileWriter csvFile = new FileWriter("csvOutput.CSV");
+            csvFile.write(new_result);
+            csvFile.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public String[] updateAttributes(int index){
         ArrayList<String> attributes = new ArrayList<>();
         attributes.add("*");
@@ -228,7 +272,8 @@ public class SQL {
         } catch(SQLException e){
             e.printStackTrace();
         }
-
+        csvText = result;
         return result;
     }
+
 }

@@ -211,7 +211,7 @@ public class GUI implements ActionListener, ItemListener {
             resultTable.setModel(new DefaultTableModel(sql.getCurrTableData(), sql.getCurrTableColumnNames()));
         }
         else if (e.getSource() == toCSVButton){
-
+            sql.exportToCsv(sql.getCSVText());
         }
     }
 
