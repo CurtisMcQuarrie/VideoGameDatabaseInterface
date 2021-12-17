@@ -1,0 +1,105 @@
+gameName, platform, drugRef, blood, bloodAndGore, cartoonViolence, fantasyViolence, animatedBlood, alcoholRef, crudeHumor
+XIII,  GC,  0,  1,  0,  0,  0,  0,  0,  0
+XIII,  PS2,  0,  1,  0,  0,  0,  0,  0,  0
+XIII,  XB,  0,  1,  0,  0,  0,  0,  0,  0
+TERA,  PC,  0,  1,  0,  0,  0,  0,  0,  0
+Art of Fighting Anthology,  PS2,  0,  0,  0,  0,  0,  0,  0,  0
+Destroy All Humans!,  PS2,  1,  0,  0,  0,  0,  1,  0,  0
+Destroy All Humans!,  XB,  1,  0,  0,  0,  0,  1,  0,  0
+Star Wars Jedi Knight: Jedi Academy,  PC,  0,  0,  0,  0,  0,  0,  0,  0
+Star Wars Jedi Knight: Jedi Academy,  XB,  0,  0,  0,  0,  0,  0,  0,  0
+Bayonetta,  PS3,  0,  0,  1,  0,  0,  0,  0,  0
+Bayonetta,  X360,  0,  0,  1,  0,  0,  0,  0,  0
+Vanquish,  PS3,  0,  0,  1,  0,  0,  0,  0,  0
+Vanquish,  X360,  0,  0,  1,  0,  0,  0,  0,  0
+Ikaruga,  GC,  0,  0,  0,  0,  1,  0,  0,  0
+Real Heroes: Firefighter,  Wii,  0,  0,  0,  0,  0,  0,  0,  0
+Yakuza 5,  PS3,  0,  1,  0,  0,  0,  0,  0,  0
+Sakura Wars,  DC,  0,  1,  0,  0,  0,  0,  0,  0
+Sakura Wars,  SAT,  0,  1,  0,  0,  0,  0,  0,  0
+Ys: Memories of Celceta,  PSV,  0,  0,  0,  0,  1,  0,  0,  0
+7 Days to Die,  PS4,  0,  0,  1,  0,  0,  0,  0,  0
+7 Days to Die,  XOne,  0,  0,  1,  0,  0,  0,  0,  0
+Yakuza 4,  PS3,  0,  1,  0,  0,  0,  0,  0,  0
+Sid Meier's Civilization VI,  PC,  1,  0,  0,  0,  0,  0,  0,  0
+GRID,  DS,  0,  0,  0,  0,  0,  0,  0,  0
+GRID,  PC,  0,  0,  0,  0,  0,  0,  0,  0
+GRID,  PS3,  0,  0,  0,  0,  0,  0,  0,  0
+GRID,  X360,  0,  0,  0,  0,  0,  0,  0,  0
+Red Faction,  PS2,  0,  1,  0,  0,  0,  0,  0,  0
+Yakuza 3,  PS3,  0,  1,  0,  0,  0,  0,  0,  0
+Psychonauts,  PS2,  0,  1,  0,  0,  1,  0,  0,  0
+Psychonauts,  XB,  0,  1,  0,  0,  1,  0,  0,  0
+Grand Theft Auto V,  PC,  0,  0,  1,  0,  0,  0,  0,  0
+Grand Theft Auto V,  PS3,  0,  0,  1,  0,  0,  0,  0,  0
+Grand Theft Auto V,  PS4,  0,  0,  1,  0,  0,  0,  0,  0
+Grand Theft Auto V,  X360,  0,  0,  1,  0,  0,  0,  0,  0
+Grand Theft Auto V,  XOne,  0,  0,  1,  0,  0,  0,  0,  0
+MediEvil,  PS,  0,  0,  1,  0,  0,  0,  0,  0
+The Walking Dead: Season Two,  PS3,  0,  0,  1,  0,  0,  0,  0,  0
+The Walking Dead: Season Two,  PS4,  0,  0,  1,  0,  0,  0,  0,  0
+The Walking Dead: Season Two,  PSV,  0,  0,  1,  0,  0,  0,  0,  0
+The Walking Dead: Season Two,  X360,  0,  0,  1,  0,  0,  0,  0,  0
+The Walking Dead: Season Two,  XOne,  0,  0,  1,  0,  0,  0,  0,  0
+Samurai Shodown,  NG,  0,  0,  1,  0,  0,  0,  0,  0
+Samurai Shodown,  SNES,  0,  0,  1,  0,  0,  0,  0,  0
+Destiny,  PS3,  0,  0,  0,  0,  0,  1,  0,  0
+Destiny,  PS4,  0,  0,  0,  0,  0,  1,  0,  0
+Destiny,  X360,  0,  0,  0,  0,  0,  1,  0,  0
+Destiny,  XOne,  0,  0,  0,  0,  0,  1,  0,  0
+Destiny: The Taken King,  PS3,  0,  0,  0,  0,  0,  1,  0,  0
+Destiny: The Taken King,  PS4,  0,  0,  0,  0,  0,  1,  0,  0
+Destiny: The Taken King,  X360,  0,  0,  0,  0,  0,  1,  0,  0
+Destiny: The Taken King,  XOne,  0,  0,  0,  0,  0,  1,  0,  0
+The Legend of Heroes: Trails of Cold Steel II,  PS3,  0,  1,  0,  0,  0,  0,  0,  0
+The Legend of Heroes: Trails of Cold Steel II,  PSV,  0,  1,  0,  0,  0,  0,  0,  0
+Descent,  PS,  0,  0,  0,  0,  1,  0,  0,  0
+Jak II,  PS2,  0,  0,  0,  0,  0,  0,  0,  1
+Jak X: Combat Racing,  PS2,  0,  0,  0,  0,  1,  0,  0,  0
+Jak 3,  PS2,  0,  0,  0,  0,  1,  0,  0,  0
+The Legend of Heroes: Trails of Cold Steel,  PS3,  0,  1,  0,  0,  0,  0,  0,  0
+The Legend of Heroes: Trails of Cold Steel,  PSV,  0,  1,  0,  0,  0,  0,  0,  0
+World of Tanks,  PC,  0,  0,  0,  0,  0,  0,  0,  0
+World of Tanks,  X360,  0,  0,  0,  0,  0,  0,  0,  0
+Resident Evil 2,  GC,  0,  0,  1,  0,  0,  0,  0,  0
+Resident Evil 2,  N64,  0,  0,  1,  0,  0,  0,  0,  0
+Resident Evil 2,  PS,  0,  0,  1,  0,  0,  0,  0,  0
+Persona 4: Dancing All Night,  PSV,  0,  0,  0,  0,  0,  0,  0,  0
+Carnival Games,  DS,  0,  0,  0,  1,  0,  0,  0,  0
+Carnival Games,  Wii,  0,  0,  0,  1,  0,  0,  0,  0
+Onimusha: Warlords,  PS2,  0,  0,  1,  0,  0,  0,  0,  0
+No Man's Sky,  PS4,  0,  0,  0,  0,  0,  1,  0,  0
+Minecraft,  PS3,  0,  0,  0,  0,  1,  0,  0,  0
+Minecraft,  PS4,  0,  0,  0,  0,  1,  0,  0,  0
+Minecraft,  PSV,  0,  0,  0,  0,  1,  0,  0,  0
+Minecraft,  WiiU,  0,  0,  0,  0,  1,  0,  0,  0
+Minecraft,  X360,  0,  0,  0,  0,  1,  0,  0,  0
+Minecraft,  XOne,  0,  0,  0,  0,  1,  0,  0,  0
+de Blob 2,  DS,  0,  0,  0,  0,  0,  0,  0,  0
+de Blob 2,  PS3,  0,  0,  0,  0,  0,  0,  0,  0
+de Blob 2,  Wii,  0,  0,  0,  0,  0,  0,  0,  0
+de Blob 2,  X360,  0,  0,  0,  0,  0,  0,  0,  0
+South Park: The Stick of Truth,  PC,  1,  0,  1,  0,  0,  0,  0,  0
+South Park: The Stick of Truth,  PS3,  1,  0,  1,  0,  0,  0,  0,  0
+South Park: The Stick of Truth,  X360,  1,  0,  1,  0,  0,  0,  0,  0
+Devil May Cry HD Collection,  PS3,  0,  0,  1,  0,  0,  0,  0,  0
+Devil May Cry HD Collection,  X360,  0,  0,  1,  0,  0,  0,  0,  0
+God of War,  PS2,  0,  0,  1,  0,  0,  0,  0,  0
+Titan Quest,  PC,  0,  0,  0,  0,  0,  0,  0,  0
+Secret of Mana,  SNES,  0,  0,  0,  0,  1,  0,  0,  0
+Romancing SaGa 2,  SNES,  0,  1,  0,  0,  1,  0,  0,  0
+Dragon's Lair Trilogy,  Wii,  0,  1,  0,  0,  0,  0,  0,  0
+Vegas Party,  Wii,  0,  0,  0,  0,  0,  0,  0,  0
+LocoRoco 2,  PSP,  0,  0,  0,  0,  0,  0,  0,  0
+Tokyo Xanadu eX+,  PS4,  1,  0,  0,  0,  0,  0,  0,  0
+Rocket League,  PC,  0,  0,  0,  0,  0,  0,  0,  0
+Rocket League,  PS4,  0,  0,  0,  0,  0,  0,  0,  0
+Rocket League,  XOne,  0,  0,  0,  0,  0,  0,  0,  0
+L.A. Noire,  PS3,  0,  0,  1,  0,  0,  0,  0,  0
+L.A. Noire,  X360,  0,  0,  1,  0,  0,  0,  0,  0
+de Blob,  Wii,  0,  0,  0,  0,  0,  0,  0,  0
+Fishing Master,  Wii,  0,  0,  0,  0,  0,  0,  0,  0
+The Inner World,  PC,  0,  0,  0,  0,  0,  0,  0,  0
+Ys VIII: Lacrimosa of Dana,  PSV,  0,  1,  0,  0,  0,  0,  0,  0
+Zero Escape: Zero Time Dilemma,  3DS,  0,  1,  0,  0,  0,  0,  0,  0
+Zero Escape: Zero Time Dilemma,  PSV,  0,  1,  0,  0,  0,  0,  0,  0
