@@ -40,6 +40,8 @@ public class GUI implements ActionListener, ItemListener {
     private JList<String> attributeList;
     private JScrollPane attributeListScroller;
     private JTextArea resultantSet;
+    private JTable resultTable;
+    private JScrollPane resultTableScroller;
     //endregion fields
 
     //region constructors
@@ -110,15 +112,21 @@ public class GUI implements ActionListener, ItemListener {
         JPanel panel = createPanel("Resultant Set", new BorderLayout());
 
         // create components
-        resultantSet = new JTextArea();
+        resultantSet = new JTextArea(); // change to a JTable.
         resultantSet.setForeground(lightestColor);
         resultantSet.setBackground(darkestColor);
         JScrollPane scrollPane = new JScrollPane(resultantSet);
         scrollPane.setViewportView(resultantSet);
 
+        /*resultTable = new JTable();
+        resultTable.setForeground(lightestColor);
+        resultTable.setBackground(darkestColor);
+        resultTableScroller  = new JScrollPane(resultTable);
+        resultTableScroller.setPreferredSize(new Dimension(115,90));*/
         // add components
         panel.add(resultantSet);
         panel.add(scrollPane);
+        /*panel.add(resultTableScroller);*/
 
         return panel;
     }
@@ -200,6 +208,9 @@ public class GUI implements ActionListener, ItemListener {
                 attributesArray = attributesList.toArray(new String[attributesList.size()]);
             }
             resultantSet.setText(sql.executeTableQueries(tableDropdown.getSelectedIndex(), attributesArray));
+            String[] columnNames = sql.getCurrTableColumnNames();
+            if (columnNames != null)
+                System.out.println(columnNames.toString());
         }
     }
 

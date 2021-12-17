@@ -9,6 +9,7 @@ public class SQL {
     private String[] sqlQueries;
     private String[] tableNames;
     private String[] currAttributeNames;
+    private String[] currTableColumnNames;
     private Connection connection;
     private DatabaseMetaData metaData;
     //endregion fields
@@ -91,6 +92,10 @@ public class SQL {
 
     public String[] getSqlQueries() {
         return sqlQueries;
+    }
+
+    public String[] getCurrTableColumnNames() {
+        return currTableColumnNames;
     }
 //endregion getters and setters
 
@@ -177,17 +182,23 @@ public class SQL {
         //System.out.println(result);
         return result;
     }
+
+
+
     //endregion GUI called methods
 
     private String formatResultantSet(ResultSet resultSet){
         String result = "";
         try{
             ResultSetMetaData metaData = resultSet.getMetaData();
+            //int colCount = metaData.getColumnCount();
+            //currTableColumnNames = new String[colCount];
             for (int i = 0; i < metaData.getColumnCount(); i++) { //retrieves column labels
                 if (i == metaData.getColumnCount()-1)
                     result += metaData.getColumnName(i+1);
                 else
                     result += metaData.getColumnName(i+1) + ", ";
+                //currTableColumnNames[i] = metaData.getColumnName(i+1);
             }
             result += "\n";
             while(resultSet.next()){ //cycles through rows
@@ -205,6 +216,4 @@ public class SQL {
         }
         return result;
     }
-
-
 }
