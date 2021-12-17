@@ -1,5 +1,7 @@
 import java.sql.*;
 import java.util.ArrayList;
+import java.io.*;
+import java.util.Scanner ;
 
 public class SQL {
 
@@ -11,6 +13,8 @@ public class SQL {
     private String[] currAttributeNames;
     private Connection connection;
     private DatabaseMetaData metaData;
+
+
     //endregion fields
 
     //region constructors
@@ -64,6 +68,43 @@ public class SQL {
                 "GROUP BY gameName, platform ORDER BY avg_percent ASC LIMIT 5;"};
         initialize();
 
+    }
+
+    public void exportToCsv(String result) {
+
+        String new_result = "" ;
+        Scanner scan = new Scanner(result) ;
+        String headers =  scan.nextLine() ;
+
+        System.out.println(headers) ;
+
+        String[] columnsLength = headers.split(",");
+
+        for(int i = 0 ; i <result.length() ; i++){
+
+
+
+        }
+
+
+        try {
+
+
+
+         //   String[] columnsLength = headers.split(",") ;
+
+            //System.out.println(columnsLength.length) ;
+
+
+            FileWriter csvFile = new FileWriter("csvOutput.CSV") ;
+            csvFile.write(result);
+            csvFile.close() ;
+
+        }
+
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     //endregion constructors
@@ -146,6 +187,8 @@ public class SQL {
         } catch (SQLException e){
             e.printStackTrace();
         }
+
+        exportToCsv(result) ;
         return result;
     }
 
