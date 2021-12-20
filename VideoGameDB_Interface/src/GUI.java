@@ -17,8 +17,6 @@ public class GUI implements ActionListener, ItemListener {
     private int prefHeight = 200;
     private int minWidth = 900;
     private int minHeight = 200;
-    private int borderSpaceX = 5;
-    private int borderSpaceY = 5;
     // font fields
     private String fontName = Font.SANS_SERIF;
     private int fontStyle = Font.PLAIN;
