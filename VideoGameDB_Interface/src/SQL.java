@@ -39,7 +39,9 @@ public class SQL {
                     "LEFT JOIN Locations Loc ON DDOff.locID=Loc.locID WHERE Loc.country='Canada' AND gameName IN\n" +
                     "(SELECT gameName FROM Ratings WHERE rating='E' UNION SELECT gameName FROM PublishedVideoGames\n" +
                     "WHERE genre='strategy' UNION SELECT gameName FROM Scores WHERE scoreType='Critic' AND scoreValue<=60) LIMIT " + MAX_ROW_COUNT + ";",
-                "SELECT gameName,platform, pubName, naSales from PublishedVideoGames natural join publishers natural join sales where gamesPublished > 10 AND gameName in( select gameName from PublishedVideoGames natural join sales natural join scores where (scoreValue/outOf > 0.5)) order by naSales Desc ;",
+                "select gameName,platform, pubName, naSales , gamespublished from PublishedVideoGames natural join publishers\n" +
+                        "    natural join sales where gamesPublished > 10 AND gameName in( select gameName from PublishedVideoGames natural join sales\n" +
+                        "    natural join scores where (scoreValue/outOf > 0.5)) order by naSales Desc ;",
                 "SELECT gameName, platform, pubName, devName, (globalCount + naCount + euCount + jpCount + otherCount)/5 AS avgPlayerCount\n" +
                     "FROM PublishedVideoGames NATURAL JOIN PlayedBy NATURAL JOIN Players NATURAL JOIN Developed\n" +
                     "WHERE avgPlayerCount in (SELECT MIN((globalCount + naCount + euCount + jpCount + otherCount)/5) AS minPlayerCount\n" +
