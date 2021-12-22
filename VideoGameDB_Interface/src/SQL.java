@@ -219,7 +219,7 @@ public class SQL {
         }
         return result;
     }
-
+    int csvCounter =0;
     public void exportToCsv(String result) {
         if(result != null){
             String new_result = "";
@@ -241,7 +241,8 @@ public class SQL {
                 line = scan.nextLine();
             }
             try {
-                FileWriter csvFile = new FileWriter("csvOutput.CSV");
+                FileWriter csvFile = new FileWriter("csvOutput"+csvCounter+".CSV");
+                csvCounter++;
                 csvFile.write(new_result);
                 csvFile.close();
             } catch (Exception e) {
