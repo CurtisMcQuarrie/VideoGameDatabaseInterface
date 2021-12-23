@@ -1,13 +1,12 @@
 import java.io.FileWriter;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class SQL {
 
     //region fields
     private final int MAX_ROW_COUNT = 2500;
-    private final String DB_FILE_NAME = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\VideoGameDB_Interface\\src\\Group73_VideoGame_DB.db";
+    private final String DB_FILE_NAME = "jdbc:sqlite:" + System.getProperty("user.dir") + "\\Group73_VideoGame_DB.db";
     private String csvText;
     private String[] queries; //sql code
     private String[] sqlQueries;
@@ -21,6 +20,7 @@ public class SQL {
 
     //region constructors
     public SQL() {
+        System.out.println(DB_FILE_NAME);
         queries = new String[] {"Find all E-rated strategy games that have been developed by developers located in Canada, with a critic score worse than 60%.",
                 "Find the highest selling game in North America that has a user and critic score of above 50%. The publisher needs to have published over 10 games.",
                 "Find the games which have the lowest average player base across all regions.",
@@ -39,7 +39,7 @@ public class SQL {
                     "LEFT JOIN Locations Loc ON DDOff.locID=Loc.locID WHERE Loc.country='Canada' AND gameName IN\n" +
                     "(SELECT gameName FROM Ratings WHERE rating='E' UNION SELECT gameName FROM PublishedVideoGames\n" +
                     "WHERE genre='strategy' UNION SELECT gameName FROM Scores WHERE scoreType='Critic' AND scoreValue<=60) LIMIT " + MAX_ROW_COUNT + ";",
-                "select gameName,platform, pubName, naSales , gamespublished from PublishedVideoGames natural join publishers\n" +
+                "select gameName,platform, pubName, naSales , gamesPublished from PublishedVideoGames natural join publishers\n" +
                         "    natural join sales where gamesPublished > 10 AND gameName in( select gameName from PublishedVideoGames natural join sales\n" +
                         "    natural join scores where (scoreValue/outOf > 0.5)) order by naSales Desc ;",
                 "SELECT gameName, platform, pubName, devName, (globalCount + naCount + euCount + jpCount + otherCount)/5 AS avgPlayerCount\n" +
@@ -74,9 +74,7 @@ public class SQL {
                 "SELECT gameName, platform, AVG(scoreValue/outOf) as avg_percent FROM Scores WHERE gameName LIKE '%Pokemon%'\n" +
                     "GROUP BY gameName, platform ORDER BY avg_percent ASC LIMIT 5;"};
         initialize();
-
     }
-
     //endregion constructors
 
     //region main methods
@@ -146,7 +144,8 @@ public class SQL {
                     if (i > 0) {
                         result += ",  ";
                     }
-                    result += resultSet.getString(i+1);
+                    result += removeCommas(resultSet.getString(i+1));
+                    //result += resultSet.getString(i+1);
                     currTableData[rowCount][i] = resultSet.getString(i+1);
                 }
                 result += "\n";
@@ -174,6 +173,7 @@ public class SQL {
            while(tables.next()){
                 namesList.add(tables.getString("TABLE_NAME"));
            }
+           System.out.println("Number of Table Names : " + namesList.size());
            tableNames = namesList.toArray(new String[namesList.size()]);
        } catch (SQLException e){
            e.printStackTrace();
@@ -221,34 +221,18 @@ public class SQL {
     }
     int csvCounter =0;
     public void exportToCsv(String result) {
-        if(result != null){
-            String new_result = "";
-            Scanner scan = new Scanner(result);
-            String line = scan.nextLine();
-            String[] nOfCommas = line.split(",");
-            while (scan.hasNextLine()) {
-                String[] newLine = line.split(",");
-                if (newLine.length > nOfCommas.length) {
-                    String editedLine = "";
-                    editedLine += newLine[0] + newLine[1] + ",";
-                    for (int i = 2; i < newLine.length; i++) {
-                        editedLine += newLine[i] + ",";
-                    }
-                    new_result += editedLine + "\n";
-                } else {
-                    new_result += line + "\n";
-                }
-                line = scan.nextLine();
-            }
             try {
                 FileWriter csvFile = new FileWriter("csvOutput"+csvCounter+".CSV");
                 csvCounter++;
-                csvFile.write(new_result);
+                if (result != null)
+                    csvFile.write(result);
+                else
+                    csvFile.write("");
                 csvFile.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
+        //}
     }
 
     public String[] updateAttributes(int index){
@@ -267,4 +251,16 @@ public class SQL {
     }
     //endregion GUI called methods
 
+    //region helper methods
+    private String removeCommas(String message){
+        String result = "";
+        if (message != null && message.contains(",")){
+            result = message.replace(",", " ");
+        }
+        else {
+            result = message;
+        }
+        return result;
+    }
+    //endregion helper methods
 }
