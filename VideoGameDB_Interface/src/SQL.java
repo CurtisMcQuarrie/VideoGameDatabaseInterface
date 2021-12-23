@@ -20,7 +20,7 @@ public class SQL {
 
     //region constructors
     public SQL() {
-        System.out.println(DB_FILE_NAME);
+        //System.out.println(DB_FILE_NAME);
         queries = new String[] {"Find all E-rated strategy games that have been developed by developers located in Canada, with a critic score worse than 60%.",
                 "Find the highest selling game in North America that has a user and critic score of above 50%. The publisher needs to have published over 10 games.",
                 "Find the games which have the lowest average player base across all regions.",
@@ -124,31 +124,41 @@ public class SQL {
 
     //region database commands
     private String formatResultantSet(ResultSet resultSet){
+        StringBuilder stringBuilder = new StringBuilder();
         String result = "";
         try{
             ResultSetMetaData metaData = resultSet.getMetaData();
             int colCount = metaData.getColumnCount();
             currTableColumnNames = new String[colCount];
             for (int i = 0; i < colCount; i++) { //retrieves column labels
-                if (i == colCount-1)
-                    result += metaData.getColumnName(i+1);
-                else
+                //result += metaData.getColumnName(i+1);
+                stringBuilder.append(metaData.getColumnName(i+1));
+                if (i != colCount-1){
+                    //result += ", ";
+                    stringBuilder.append(", ");
+                }
+                /*else{
                     result += metaData.getColumnName(i+1) + ", ";
+                }*/
                 currTableColumnNames[i] = metaData.getColumnName(i+1);
             }
-            result += "\n";
+            //result += "\n";
+            stringBuilder.append("\n");
             currTableData = new Object[MAX_ROW_COUNT][colCount];
             int rowCount = 0;
             while(resultSet.next() && rowCount < MAX_ROW_COUNT){ //cycles through rows
                 for (int i = 0; i < colCount; i++) { //cycles through columns
                     if (i > 0) {
-                        result += ",  ";
+                        stringBuilder.append(", ");
+                        //result += ",  ";
                     }
-                    result += removeCommas(resultSet.getString(i+1));
+                    stringBuilder.append(removeCommas(resultSet.getString(i+1)));
+                    //result += removeCommas(resultSet.getString(i+1));
                     //result += resultSet.getString(i+1);
                     currTableData[rowCount][i] = resultSet.getString(i+1);
                 }
-                result += "\n";
+                stringBuilder.append("\n");
+                //result += "\n";
                 rowCount++;
             }
             Object[][] tempTableData = new Object[rowCount][colCount];
@@ -158,6 +168,7 @@ public class SQL {
                 }
             }
             currTableData = tempTableData;
+            result = stringBuilder.toString();
         } catch(SQLException e) {
             e.printStackTrace();
         }
@@ -173,7 +184,7 @@ public class SQL {
            while(tables.next()){
                 namesList.add(tables.getString("TABLE_NAME"));
            }
-           System.out.println("Number of Table Names : " + namesList.size());
+           //System.out.println("Number of Table Names : " + namesList.size());
            tableNames = namesList.toArray(new String[namesList.size()]);
        } catch (SQLException e){
            e.printStackTrace();
@@ -196,23 +207,36 @@ public class SQL {
 
     public String executeTableQueries(int tableIndex, String[] attributesList){
         String result = "";
-        String query = "SELECT ";
+        //String query = "SELECT ";
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT ");
         try{
             Statement statement = connection.createStatement();
             if (attributesList == null || attributesList[0].compareTo("*") == 0) {
-                query += "*";
+                queryBuilder.append("*");
+                //query += "*";
             }
             else {
                 for (int index = 0; index < attributesList.length; index++) {
                     if (index == attributesList.length-1) {
-                        query += attributesList[index];
+                        queryBuilder.append(attributesList[index]);
+                        //query += attributesList[index];
                     } else {
-                        query += attributesList[index] + ", ";
+                        queryBuilder.append(attributesList[index]);
+                        queryBuilder.append(", ");
+                        //query += attributesList[index] + ", ";
                     }
                 }
             }
-            query += " FROM " + tableNames[tableIndex] + " LIMIT " + MAX_ROW_COUNT + ";";
-            ResultSet resultSet = statement.executeQuery(query);
+            queryBuilder.append(" FROM ");
+            queryBuilder.append(tableNames[tableIndex]);
+            queryBuilder.append(" LIMIT ");
+            queryBuilder.append(MAX_ROW_COUNT);
+            queryBuilder.append(";");
+            //query += " FROM " + tableNames[tableIndex] + " LIMIT " + MAX_ROW_COUNT + ";";
+            //ResultSet resultSet = statement.executeQuery(query);
+            //System.out.println(queryBuilder.toString());
+            ResultSet resultSet = statement.executeQuery(queryBuilder.toString());
             result = formatResultantSet(resultSet);
         } catch(SQLException e){
             e.printStackTrace();
